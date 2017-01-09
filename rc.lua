@@ -18,7 +18,10 @@ last_status = "UNKNOWN"
 function triggerPin(pin, duration)
   if pin == pin_up then
     last_status = "UP"
-  else
+function triggerPin(pin, duration)
+  if pin == pin_up then
+    last_status = "UP"
+  elseif pin == pin_down then
     last_status = "DOWN"
   end
   gpio.mode(pin, gpio.OUTPUT)
@@ -90,8 +93,23 @@ end
 wifi.setmode(wifi.STATION)
 wifi.sta.config(ssid, pass)
 
--- Test
-triggerPin(pin_up, 1000)
+-- Blink led
+led_on = 0
+gpio.mode(4, gpio.OUTPUT)
+gpio.write(4, gpio.LOW)
+tmr.alarm(0, 50, tmr.ALARM_AUTO, function()
+  if led_on == 0 then
+    led_on = 1
+    gpio.write(4, gpio.HIGH)
+  else
+    led_on = 0
+    gpio.write(4, gpio.LOW)
+  end
+end)
+tmr.alarm(1, 1000, tmr.ALARM_SINGLE, function()
+  gpio.write(4, gpio.HIGH)
+  tmr.unregister(0)
+end)
 
 -- Init server
 srv = net.createServer(net.TCP) 

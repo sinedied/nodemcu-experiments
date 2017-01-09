@@ -18,9 +18,6 @@ last_status = "UNKNOWN"
 function triggerPin(pin, duration)
   if pin == pin_up then
     last_status = "UP"
-function triggerPin(pin, duration)
-  if pin == pin_up then
-    last_status = "UP"
   elseif pin == pin_down then
     last_status = "DOWN"
   end

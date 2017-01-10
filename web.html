@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>NodeMCU RC Web UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+  html {
+    background: #99a;
+    height: 100%;
+  }
+  body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .box {
+    max-width: 400px;
+    background: #fff;
+    border-radius: 5px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+  h1 {
+    color: #333;
+  }
+  button {
+    width: 100%;
+    border-radius: 5px;
+    border: 0;
+    background: #39f;
+    padding: 10px;
+    color: #fff;
+    margin: 5px 0;
+    font-size: 1em;
+  }
+  button:active {
+    opacity: .7;
+  }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>NodeMCU RC</h1>
+    <p>Status: <span id="status">?</span></p>
+    <p>
+      <button id="up">UP</button>
+      <button id="down">DOWN</button>
+    </p>
+  </div>
+  <script>
+  var $ = function(s) { return document.querySelector(s); }
+  function get(url, cb) {
+    var xhr = new XMLHttpRequest();
+    xhr.onloadend = function () {
+      cb(xhr.status, xhr.responseText);
+    }
+    xhr.ontimeout = function () {
+      cb(-1, null);
+    }
+    xhr.open('GET', url, true);
+    xhr.timeout = 10000;
+    xhr.send();
+  }
+  function getStatus() {
+    get('/status', function(status, data) {
+      if (status = 200) {
+        $('#status').innerText = data || '?';
+      }
+    });
+  }
+  window.onload = function() {
+    getStatus();
+    $('#up').onclick = get.bind(null, '/up', getStatus);
+    $('#down').onclick = get.bind(null, '/down', getStatus);
+  }
+  </script>
+</body>
+</html>

@@ -64,14 +64,12 @@ function sendHttpResponse(conn, response)
   end
   if response.status == nil then
    response.status = 200
-   print("status")
   end
   local res = "HTTP/1.1 " .. response.status .. " OK\r\n"
   if response.data ~= nil then
     local type = "text/html"
     local content = response.data
     if response.json ~= nil and response.json then
-      print("json")
       type = "application/json"
       content = json.encode(response.data)
     end

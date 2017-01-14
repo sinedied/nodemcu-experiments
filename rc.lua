@@ -7,8 +7,8 @@
 -- #######################################
 
 -- Global vars
-ssid = "SSID"
-pass = "PASSWORD"
+ssid = "cyanidewifi"
+pass = "laboulette!4321"
 hostname = "node-rc"
 pin_up = 1
 pin_down = 2
@@ -23,9 +23,9 @@ function triggerPin(pin, duration)
     last_status = "DOWN"
   end
   gpio.mode(pin, gpio.OUTPUT)
-  gpio.write(pin, gpio.HIGH)
+  gpio.write(pin, gpio.LOW)
   tmr.alarm(0, duration, tmr.ALARM_SINGLE, function()
-    gpio.write(pin, gpio.LOW)
+    gpio.write(pin, gpio.HIGH)
   end)
 end
 
@@ -131,6 +131,10 @@ tmr.alarm(1, 1000, tmr.ALARM_SINGLE, function()
   gpio.write(4, gpio.HIGH)
   tmr.unregister(0)
 end)
+
+-- Init pins
+gpio.write(pin_up, gpio.HIGH)
+gpio.write(pin_down, gpio.HIGH)
 
 -- Load web.html file
 if file.open("web.html.gz") then
